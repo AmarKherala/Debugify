@@ -20,20 +20,23 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Run assembleDebug
-        run: ./gradlew build
+      - name: Cache Gradle
+        uses: gradle/actions/setup-gradle@v3
 
-      - name: List build outputs (for debugging)
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Build with Gradle
+        run: ./gradlew build --stacktrace --info
+
+      - name: List build outputs
         run: |
           echo "===== build tree ====="
-          find . -type f | sed -e 's/\.\///g' | sort
+          find build -type f | sort
           echo "===== done ====="
 
       - name: Upload artifact
-        # Adjust the path to where the .jar is located
         uses: actions/upload-artifact@v4
         with:
-          name: Debugify-debug
-          path: |
-            **/build/libs/*.jar
-            **/build/outputs/**/*.jar
+          name: Debugify
+          path: build/libs/*.jar
