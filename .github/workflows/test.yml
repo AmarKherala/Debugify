@@ -21,7 +21,7 @@ jobs:
           java-version: 21
 
       - name: Run assembleDebug
-        run: ./gradlew assembleDebug
+        run: ./gradlew build
 
       - name: List build outputs (for debugging)
         run: |
